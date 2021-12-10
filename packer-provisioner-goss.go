@@ -15,8 +15,10 @@ import (
 
 	"github.com/hashicorp/packer-plugin-sdk/packer"
 	"github.com/hashicorp/packer-plugin-sdk/plugin"
+	"github.com/hashicorp/packer-plugin-sdk/version"
 	"github.com/hashicorp/packer-plugin-sdk/template/config"
 	"github.com/hashicorp/packer-plugin-sdk/template/interpolate"
+
 )
 
 const (
@@ -101,12 +103,14 @@ type Provisioner struct {
 }
 
 func main() {
-	server, err := plugin.Server()
+	pps := plugin.NewSet()
+	pps.RegisterProvisioner(plugin.DEFAULT_NAME, new(Provisioner))
+	pps.SetVersion(version.InitializePluginVersion("3.1.4", ""))
+	err := pps.Run()
 	if err != nil {
-		panic(err)
+		fmt.Fprintln(os.Stderr, err.Error())
+		os.Exit(1)
 	}
-	server.RegisterProvisioner(new(Provisioner))
-	server.Serve()
 }
 
 func (p *Provisioner) ConfigSpec() hcldec.ObjectSpec {
