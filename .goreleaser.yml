@@ -47,7 +47,7 @@ release:
   prerelease: auto
   name_template: "{{.ProjectName}}_v{{.Version}}"
 checksum:
-  name_template: '{{ .ProjectName }}_v{{ .Version }}.x5.0_SHA256SUMS'
+  name_template: '{{ .ProjectName }}_v{{ .Version }}_SHA256SUMS'
   algorithm: sha256
 changelog:
   sort: asc
